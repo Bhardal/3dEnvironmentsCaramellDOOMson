@@ -55,6 +55,8 @@ public class PauseGame : MonoBehaviour
             menu.SetActive(false);
             off = true;
             on = false;
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
 
     }
 

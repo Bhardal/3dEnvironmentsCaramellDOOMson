@@ -17,7 +17,10 @@ public class MouseLook : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        mouseInput = new Vector2(Input.GetAxisRaw("Mouse X"), Input.GetAxisRaw("Mouse Y")) * sensivity;
-        transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x - mouseInput.y, transform.rotation.eulerAngles.y + mouseInput.x, transform.rotation.eulerAngles.z);
+        if (Cursor.lockState == CursorLockMode.Locked)
+        {
+            mouseInput = new Vector2(Input.GetAxisRaw("Mouse X"), Input.GetAxisRaw("Mouse Y")) * sensivity;
+            transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x - mouseInput.y, transform.rotation.eulerAngles.y + mouseInput.x, transform.rotation.eulerAngles.z);
+        }
     }
 }
