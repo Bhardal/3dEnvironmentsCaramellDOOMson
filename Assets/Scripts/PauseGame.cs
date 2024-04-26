@@ -7,6 +7,9 @@ public class PauseGame : MonoBehaviour
     public GameObject menu;
     public GameObject resume;
     public GameObject quit;
+    public AudioSource music1;
+    public AudioSource music2;
+    private AudioSource music;
 
     public bool on;
     public bool off;
@@ -27,6 +30,15 @@ public class PauseGame : MonoBehaviour
 
     void Update()
     {
+        if (music1.mute == false)
+        {
+            music = music1;
+        }
+        else if (music2.mute == false)
+        {
+            music = music2;
+        }
+
         if (off && Input.GetButtonDown("pause"))
         {
             Time.timeScale = 0;
@@ -35,6 +47,7 @@ public class PauseGame : MonoBehaviour
             on = true;
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
+            music.Pause();
         }
 
         else if (on && Input.GetButtonDown("pause"))
@@ -45,6 +58,7 @@ public class PauseGame : MonoBehaviour
             on = false;
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
+            music.UnPause();
         }
 
     }
@@ -57,6 +71,7 @@ public class PauseGame : MonoBehaviour
             on = false;
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
+            music.UnPause();
 
     }
 
