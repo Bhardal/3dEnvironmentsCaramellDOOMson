@@ -1,5 +1,8 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -16,8 +19,8 @@ public class GunSystem : MonoBehaviour
     public GameObject bulletCasing;             //Eject Used Casing
     public Transform casinglocation;            //Where The Casing Gets Ejected
     public AudioSource weaponSound;             //Weapon Sound Effect
-    public AudioSource noAmmoSound;             //Empty Gun Sound 
-    public AudioSource reloadSound;             //Reload Sound 
+    public AudioSource noAmmoSound;             //Empty Gun Sound
+    public AudioSource reloadSound;             //Reload Sound
 
     public Animator anim;                       //Animations For Weapons
     public Vector3 reloading;                   //New Position For Reload
@@ -40,13 +43,14 @@ public class GunSystem : MonoBehaviour
     private int ammoNeeded;                     //Ammo Counter For How Much Is Needed, You Shoot 5 Bullets, You Need 5
 
     public bool semi;                           //Is the Weapon Semi
-    public bool auto;                           //Is The Weapon Auto
-    public bool melee;                          //Is The Weapon Melee
+    // public bool auto;                           //Is The Weapon Auto
+    // public bool melee;                          //Is The Weapon Melee
 
     //There Can Be A Bug Where The Casing Goes Reversed, These Two Bools Will Fix It:
 
     public bool casingForward;                  //Get Correct Orientation Of Casings
     public bool casingBackwards;                //Get Correct Orientation Of Casings
+    public bool infinite;
 
     private bool isreloading;                   //Is The Weapon Reloading
     private bool canShoot;                      //Is The Weapon Able To Be Shot
@@ -68,6 +72,14 @@ public class GunSystem : MonoBehaviour
         originalRotation = transform.localEulerAngles;
         initialPosition = transform.localPosition;
 
+        if (infinite == true)
+        {
+            anim.speed = fireRate/2f;
+        } else
+        {
+            anim.speed = fireRate/1.5f;
+        }
+
 
     }
 
@@ -78,8 +90,9 @@ public class GunSystem : MonoBehaviour
 
         //For Semi Auto Weapons:
 
-        if (Input.GetButtonDown("Fire1") && Time.time >= nextTimeToFire && semi && magazineSize > 0 && canShoot)
+        if (Input.GetButtonDown("Fire1") && Time.time >= nextTimeToFire && semi && magazineSize > 0 && canShoot && Cursor.lockState == CursorLockMode.Locked)
         {
+            anim.SetBool("empty", false);
             AddRecoil();
             nextTimeToFire = Time.time + 1f / fireRate;
             anim.SetBool("shoot", true);
@@ -87,28 +100,28 @@ public class GunSystem : MonoBehaviour
             Shoot();
         }
 
-        //For Weapons With Melee:
+        // //For Weapons With Melee:
 
-        if (Input.GetButtonDown("Fire1") && Time.time >= nextTimeToFire && melee)
-        {
-            nextTimeToFire = Time.time + 1f / fireRate;
+        // if (Input.GetButtonDown("Fire1") && Time.time >= nextTimeToFire && melee)
+        // {
+        //     nextTimeToFire = Time.time + 1f / fireRate;
 
-            anim.SetBool("melee", true);
-            Invoke("setboolback", .5f);
-            Melee();
-        }
+        //     anim.SetBool("melee", true);
+        //     Invoke("setboolback", .5f);
+        //     Melee();
+        // }
 
 
-        //For Auto Weapons:
+        // //For Auto Weapons:
 
-        if (Input.GetButton("Fire1") && Time.time >= nextTimeToFire && magazineSize > 0 && auto && canShoot)
-        {
-            nextTimeToFire = Time.time + 1f / fireRate;
-            anim.SetBool("shoot", true);
-            Invoke("setboolback", .5f);
-            AddRecoilAuto();
-            Shoot();
-        }
+        // if (Input.GetButton("Fire1") && Time.time >= nextTimeToFire && magazineSize > 0 && auto && canShoot)
+        // {
+        //     nextTimeToFire = Time.time + 1f / fireRate;
+        //     anim.SetBool("shoot", true);
+        //     Invoke("setboolback", .5f);
+        //     AddRecoilAuto();
+        //     Shoot();
+        // }
 
         //Checks For 0 Ammo:
 
@@ -127,27 +140,42 @@ public class GunSystem : MonoBehaviour
 
         if (magazineSize == 0)
         {
-            ammoText.GetComponent<Text>().text = "Reload" ;
+            // ammoText.GetComponent<TextMeshProUGUI>().text = "Reload" ;
             anim.SetBool("empty", true);
         }
 
-        if (magazineSize > 0)
-        {
-            anim.SetBool("empty", false);
-        }
+        // if (magazineSize > 0)
+        // {
+        //     anim.SetBool("empty", false);
+        // }
 
 
         //Reloading:
-
-        if (Input.GetButtonDown("reload") && magazineSize == 0 && ammoCache > 0)
+        if (Input.GetButtonDown("reload") && infinite && ammoNeeded > 0)
         {
             canShoot = false;
-            ammoCache -= ammoNeeded;
             magazineSize += ammoNeeded;
             ammoNeeded -= ammoNeeded;
             isreloading = true;
             StartCoroutine(ReloadTimer());
-            
+            anim.SetBool("empty", false);
+
+        } else if (Input.GetButtonDown("reload") && ammoCache >= ammoNeeded && ammoCache > 0 && ammoNeeded > 0)
+        {
+            //Stops Bugs With Pressing Reload More Than Once:
+            if (isreloading)
+            {
+                return;
+            }
+            anim.SetBool("empty", true);
+            anim.Play("Base Layer.ShotgunEmpty", 0);
+            canShoot = false;
+            ammoCache -= 1;
+            magazineSize += 1;
+            ammoNeeded -= 1;
+            isreloading = true;
+            StartCoroutine(ReloadTimer());
+            anim.SetBool("empty", false);
         }
 
         //Stops Bugs With Pressing Reload More Than Once:
@@ -170,8 +198,13 @@ public class GunSystem : MonoBehaviour
 
         //Tells Our Text Object What To Say:
 
-
-        ammoText.GetComponent<Text>().text = magazineSize + " / " + ammoCache;
+        if (infinite == false)
+        {
+            ammoText.GetComponent<TextMeshProUGUI>().text = magazineSize + " / " + ammoCache;
+        } else
+        {
+            ammoText.GetComponent<TextMeshProUGUI>().text = magazineSize + " / ∞";
+        }
 
 
         //Our Swaying Function Being Put To Action:
@@ -185,7 +218,7 @@ public class GunSystem : MonoBehaviour
 
             Vector3 finalPosition = new Vector3(movementX, movementY, 0);
             transform.localPosition = Vector3.Lerp(transform.localPosition, finalPosition + initialPosition, Time.deltaTime * smoothAmount);
-        
+
      }
 
 
@@ -264,6 +297,7 @@ public class GunSystem : MonoBehaviour
         if (canShoot)
         {
             transform.localEulerAngles += upRecoil;
+            anim.SetBool("empty", true);
             StartCoroutine(StopRecoilSemi());
         }
     }
@@ -275,6 +309,7 @@ public class GunSystem : MonoBehaviour
         if (canShoot)
         {
             transform.localEulerAngles += upRecoil;
+            anim.SetBool("empty", true);
             StartCoroutine(StopRecoilSemi());
         }
     }
@@ -290,8 +325,10 @@ public class GunSystem : MonoBehaviour
 
     IEnumerator StopRecoilSemi()
     {
+
         yield return new WaitForSeconds(.1f);
         transform.localEulerAngles = originalRotation;
+        anim.SetBool("empty", false);
     }
 
     //Our Reload Timer:
