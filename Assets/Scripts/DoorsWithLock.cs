@@ -9,7 +9,8 @@ public class DoorsWithLock : MonoBehaviour
     public GameObject KeyINV;
 
     public AudioSource doorSound;
-    public AudioSource lockedSound;
+    public AudioSource denied;
+    public AudioSource granted;
 
 
     public bool inReach;
@@ -57,28 +58,28 @@ public class DoorsWithLock : MonoBehaviour
         {
             locked = false;
             hasKey = true;
-        }  
-        
+        }
+
         else
         {
             hasKey = false;
         }
 
-        if (hasKey && inReach && Input.GetButtonDown("Interact"))
+        if (hasKey && inReach && Input.GetButtonDown("Interact") && door.GetBool("Open") == false)
         {
             unlocked = true;
             DoorOpens();
         }
 
-        else
+        else if (inReach && Input.GetButtonDown("Interact") && door.GetBool("Closed") == false)
         {
             DoorCloses();
         }
 
         if (locked && inReach && Input.GetButtonDown("Interact"))
         {
-            lockedSound.Play();
-            
+            denied.Play();
+
         }
 
 
@@ -91,6 +92,7 @@ public class DoorsWithLock : MonoBehaviour
         {
             door.SetBool("Open", true);
             door.SetBool("Closed", false);
+            granted.Play();
             doorSound.Play();
         }
 
@@ -102,6 +104,7 @@ public class DoorsWithLock : MonoBehaviour
         {
             door.SetBool("Open", false);
             door.SetBool("Closed", true);
+            doorSound.Play();
         }
 
     }
