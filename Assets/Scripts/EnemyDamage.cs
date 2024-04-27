@@ -19,15 +19,25 @@ public class EnemyDamage : MonoBehaviour
 
     void Start()
     {
-        damageRange = Random.Range(minDamage, maxDamage);
         source = player.GetComponentInChildren<AudioSource>();
     }
 
     void OnTriggerEnter(Collider other)
     {
+        damageRange = Random.Range(minDamage, maxDamage);
         if (other.gameObject.tag == "Player" && randomDamage)
         {
-            player.GetComponent<PlayerHealth>().health -= damageRange;
+            if (player.GetComponent<PlayerHealth>().shield <= 0)
+            {
+                player.GetComponent<PlayerHealth>().health -= damageRange;
+            } else
+            {
+                player.GetComponent<PlayerHealth>().shield -= damageRange;
+                if (player.GetComponent<PlayerHealth>().shield < 0)
+                {
+                    player.GetComponent<PlayerHealth>().health += player.GetComponent<PlayerHealth>().shield;
+                }
+            }
             source.clip = sounds[Random.Range(0, sounds.Length)];
             source.Play();
         }
