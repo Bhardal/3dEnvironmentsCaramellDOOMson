@@ -6,11 +6,13 @@ public class PlayerHealth : MonoBehaviour
 {
     public GameObject deathMenu;
     public AudioSource loseSound;
+    public AudioSource lowHealthSound;
 
     public float health = 100f;
     public float shield = 0f;
 
     public bool died;
+    public bool low = false;
     public bool on;
     public bool off;
 
@@ -22,6 +24,7 @@ public class PlayerHealth : MonoBehaviour
         deathMenu.SetActive(false);
         off = true;
         on = false;
+        low = false;
     }
 
 
@@ -49,9 +52,15 @@ public class PlayerHealth : MonoBehaviour
         if (health > 100)
         {
             health = 100;
+            low = false;
+            lowHealthSound.Stop();
         } else if (health <= 0)
         {
             health = 0;
+        } else if (health < 20 && low == false)
+        {
+            low = true;
+            lowHealthSound.Play();
         }
 
         if (shield > 50)
