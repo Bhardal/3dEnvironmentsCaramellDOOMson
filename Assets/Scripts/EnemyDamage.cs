@@ -19,7 +19,7 @@ public class EnemyDamage : MonoBehaviour
 
     void Start()
     {
-        source = player.GetComponentInChildren<AudioSource>();
+        source = player.GetComponent<AudioSource>();
     }
 
     void OnTriggerEnter(Collider other)
