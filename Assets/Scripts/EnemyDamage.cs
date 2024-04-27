@@ -34,7 +34,17 @@ public class EnemyDamage : MonoBehaviour
 
         if (other.gameObject.tag == "Player" && setDamage)
         {
-            player.GetComponent<PlayerHealth>().health -= damageSet;
+            if (player.GetComponent<PlayerHealth>().shield <= 0)
+            {
+                player.GetComponent<PlayerHealth>().health -= damageSet;
+            } else
+            {
+                player.GetComponent<PlayerHealth>().shield -= damageSet;
+                if (player.GetComponent<PlayerHealth>().shield < 0)
+                {
+                    player.GetComponent<PlayerHealth>().health += player.GetComponent<PlayerHealth>().shield;
+                }
+            }
             source.clip = sounds[Random.Range(0, sounds.Length)];
             source.Play();
         }

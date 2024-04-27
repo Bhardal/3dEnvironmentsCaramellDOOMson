@@ -40,11 +40,17 @@ public class HealthBar : MonoBehaviour
         if (healthNumber < 0)
         {
             healthNumber = 0;
+        } else if (healthNumber > 20)
+        {
+            healthNumber = 20;
         }
         shieldNumber = (int)Math.Round(CurrentShield / 5);
         if (shieldNumber < 0)
         {
             shieldNumber = 0;
+        } else if (shieldNumber > 10)
+        {
+            shieldNumber = 10;
         }
         healthBar.texture = HealthBarImages[healthNumber];
         shieldBar.texture = ShieldBarImages[shieldNumber];

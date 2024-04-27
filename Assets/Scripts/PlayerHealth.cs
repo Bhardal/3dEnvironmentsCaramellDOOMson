@@ -44,11 +44,17 @@ public class PlayerHealth : MonoBehaviour
         if (health > 100)
         {
             health = 100;
+        } else if (health < 0)
+        {
+            health = 0;
         }
 
         if (shield > 50)
         {
             shield = 50;
+        } else if (shield < 0)
+        {
+            shield = 0;
         }
 
     }

@@ -11,16 +11,19 @@ public class PickupClose : MonoBehaviour
     public GameObject quit;
     public GameObject weaponOB;
     public GameObject player;
+    public GameObject HealthFX;
+    public GameObject ShieldFX;
 
     public AudioSource pickUpAmmoSound;
     public AudioSource pickUpShotgunSound;
     public AudioSource pickUpHealthSound;
     public AudioSource pickUpShieldSound;
     public AudioSource winSound;
+
     public int healthPackHeal;
     public int ShieldPackHeal;
-
     public int ammoBoxAmount;
+    private float currentHealth;
 
     public bool inreach;
     public GameObject pickableObject;
@@ -31,6 +34,10 @@ public class PickupClose : MonoBehaviour
 
     void Start()
     {
+        currentHealth = player.GetComponent<PlayerHealth>().health;
+        HealthFX.SetActive(false);
+        ShieldFX.SetActive(false);
+
         menu.SetActive(false);
         off = true;
         on = false;
@@ -80,23 +87,23 @@ public class PickupClose : MonoBehaviour
 
             } else if (pickableObject.name == "HealthPack")
             {
-                // player.GetComponent<WeaponsSwitch>().shotgun = true;
-                // player.GetComponent<WeaponsSwitch>().object01.SetActive(false);
-                // player.GetComponent<WeaponsSwitch>().object02.SetActive(true);
+                player.GetComponent<PlayerHealth>().health += healthPackHeal;
+                HealthFX.SetActive(true);
                 pickableObject.SetActive(false);
                 pickUpHealthSound.Play();
                 inreach = false;
                 pickableObject = null;
+                StartCoroutine(TurnScreenFXOFF());
 
             } else if (pickableObject.name == "ShieldPack")
             {
-                // player.GetComponent<WeaponsSwitch>().shotgun = true;
-                // player.GetComponent<WeaponsSwitch>().object01.SetActive(false);
-                // player.GetComponent<WeaponsSwitch>().object02.SetActive(true);
+                player.GetComponent<PlayerHealth>().shield += ShieldPackHeal;
+                ShieldFX.SetActive(true);
                 pickableObject.SetActive(false);
                 pickUpShieldSound.Play();
                 inreach = false;
                 pickableObject = null;
+                StartCoroutine(TurnScreenFXOFF());
 
             } else if (pickableObject.name == "EndWall")
             {
@@ -120,6 +127,13 @@ public class PickupClose : MonoBehaviour
     {
         yield return new WaitForSeconds(1000);
         Time.timeScale = 0;
+    }
+
+    IEnumerator TurnScreenFXOFF()
+    {
+        yield return new WaitForSeconds(1.25f);
+        HealthFX.SetActive(false);
+        ShieldFX.SetActive(false);
     }
 
 }
