@@ -6,6 +6,7 @@ public class WeaponsSwitch : MonoBehaviour
 {
     public GameObject object01;
     public GameObject object02;
+    public bool shotgun = false;
 
 
 
@@ -26,7 +27,7 @@ public class WeaponsSwitch : MonoBehaviour
             object02.SetActive(false);
         }
 
-        if (Input.GetButtonDown("2"))
+        if (Input.GetButtonDown("2") && shotgun)
         {
             object01.SetActive(false);
             object02.SetActive(true);

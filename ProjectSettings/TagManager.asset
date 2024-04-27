@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - Reach
+  - Pickable
   layers:
   - Default
   - TransparentFX

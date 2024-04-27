@@ -227,7 +227,7 @@ public class GunSystem : MonoBehaviour
     void Shoot()
     {
         RaycastHit hit;
-        if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, range)) ;
+        if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, range))
         {
             magazineSize--;
             ammoNeeded++;
