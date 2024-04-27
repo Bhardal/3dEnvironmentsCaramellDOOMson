@@ -14,6 +14,7 @@ public class Target : MonoBehaviour
 
     public float health = 100f;
 
+    public bool finalBoss;
     // public bool animate;
     // public bool replace;
     public bool destroy;
@@ -57,6 +58,11 @@ public class Target : MonoBehaviour
 
     void Destroy()
     {
+        if (finalBoss)
+        {
+            FindObjectOfType<PickupClose>().GetComponent<PickupClose>().FinalBossKilled = true;
+            FindObjectOfType<DoorsWithLockAuto>().GetComponent<DoorsWithLockAuto>().FinalBossKilled = true;
+        }
         Destroy(gameObject);
     }
 

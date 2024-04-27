@@ -14,6 +14,7 @@ public class PickupClose : MonoBehaviour
     public GameObject HealthFX;
     public GameObject ShieldFX;
     public GameObject FXMenu;
+    public bool FinalBossKilled = false;
 
     public AudioSource pickUpAmmoSound;
     public AudioSource pickUpShotgunSound;
@@ -115,7 +116,7 @@ public class PickupClose : MonoBehaviour
                     StartCoroutine(TurnScreenFXOFF());
                 }
 
-            } else if (pickableObject.name == "EndWall")
+            } else if (pickableObject.name == "EndWall" && FinalBossKilled)
             {
                 AudioSource[] audios = FindObjectsOfType(typeof(AudioSource)) as AudioSource[];
                 foreach(AudioSource aud in audios)
