@@ -25,12 +25,12 @@ public class EnemyDamage : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        // if (other.gameObject.tag == "Player" && randomDamage)
-        // {
-        //     player.GetComponent<PlayerHealth>().health -= damageRange;
-        //     source.clip = sounds[Random.Range(0, sounds.Length)];
-        //     source.Play();
-        // }
+        if (other.gameObject.tag == "Player" && randomDamage)
+        {
+            player.GetComponent<PlayerHealth>().health -= damageRange;
+            source.clip = sounds[Random.Range(0, sounds.Length)];
+            source.Play();
+        }
 
         if (other.gameObject.tag == "Player" && setDamage)
         {
