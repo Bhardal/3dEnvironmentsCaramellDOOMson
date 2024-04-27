@@ -17,7 +17,6 @@ public class PickupClose : MonoBehaviour
     public AudioSource pickUpHealthSound;
     public AudioSource pickUpShieldSound;
     public AudioSource winSound;
-    public AudioSource loseSound;
     public int healthPackHeal;
     public int ShieldPackHeal;
 
