@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Threading;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SocialPlatforms.GameCenter;
 using UnityEngine.UI;
 
 public class GunSystem : MonoBehaviour
@@ -201,9 +202,11 @@ public class GunSystem : MonoBehaviour
         if (infinite == false)
         {
             ammoText.GetComponent<TextMeshProUGUI>().text = magazineSize + " / " + ammoCache;
+            ammoText.GetComponent<TextMeshProUGUI>().alignment = TextAlignmentOptions.Center;
         } else
         {
-            ammoText.GetComponent<TextMeshProUGUI>().text = magazineSize + " / ∞";
+            ammoText.GetComponent<TextMeshProUGUI>().text = magazineSize + " /   <sprite=\"Infinity\" name=\"Inf\">";
+            ammoText.GetComponent<TextMeshProUGUI>().alignment = TextAlignmentOptions.Right;
         }
 
 
