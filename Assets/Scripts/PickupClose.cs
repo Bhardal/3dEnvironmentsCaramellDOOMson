@@ -1,11 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.Tracing;
+using System.Threading;
 using Unity.VisualScripting;
 using UnityEngine;
 
 public class PickupClose : MonoBehaviour
 {
+    public GameObject menu;
+    public GameObject quit;
     public GameObject weaponOB;
     public GameObject player;
 
@@ -13,12 +16,26 @@ public class PickupClose : MonoBehaviour
     public AudioSource pickUpShotgunSound;
     public AudioSource pickUpHealthSound;
     public AudioSource pickUpShieldSound;
+    public AudioSource winSound;
+    public AudioSource loseSound;
+    public int healthPackHeal;
+    public int ShieldPackHeal;
 
     public int ammoBoxAmount;
 
     public bool inreach;
     public GameObject pickableObject;
 
+    public bool on;
+    public bool off;
+
+
+    void Start()
+    {
+        menu.SetActive(false);
+        off = true;
+        on = false;
+    }
 
     void OnTriggerEnter(Collider other)
     {
@@ -82,9 +99,28 @@ public class PickupClose : MonoBehaviour
                 inreach = false;
                 pickableObject = null;
 
+            } else if (pickableObject.name == "EndWall")
+            {
+                AudioSource[] audios = FindObjectsOfType(typeof(AudioSource)) as AudioSource[];
+                foreach(AudioSource aud in audios)
+                    aud.volume = 0;
+
+                winSound.volume = 1;
+                winSound.Play();
+                menu.SetActive(true);
+                off = false;
+                on = true;
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
+                StartCoroutine(WaitEnd());
             }
         }
-
-
     }
+
+    IEnumerator WaitEnd()
+    {
+        yield return new WaitForSeconds(1000);
+        Time.timeScale = 0;
+    }
+
 }
