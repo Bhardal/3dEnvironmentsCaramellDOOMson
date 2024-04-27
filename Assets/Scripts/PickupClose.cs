@@ -10,7 +10,9 @@ public class PickupClose : MonoBehaviour
     public GameObject player;
 
     public AudioSource pickUpAmmoSound;
-    public AudioSource pickUpShotgun;
+    public AudioSource pickUpShotgunSound;
+    public AudioSource pickUpHealthSound;
+    public AudioSource pickUpShieldSound;
 
     public int ammoBoxAmount;
 
@@ -56,7 +58,27 @@ public class PickupClose : MonoBehaviour
                 player.GetComponent<WeaponsSwitch>().object01.SetActive(false);
                 player.GetComponent<WeaponsSwitch>().object02.SetActive(true);
                 pickableObject.SetActive(false);
-                pickUpAmmoSound.Play();
+                pickUpShotgunSound.Play();
+                inreach = false;
+                pickableObject = null;
+
+            } else if (pickableObject.name == "HealthPack")
+            {
+                // player.GetComponent<WeaponsSwitch>().shotgun = true;
+                // player.GetComponent<WeaponsSwitch>().object01.SetActive(false);
+                // player.GetComponent<WeaponsSwitch>().object02.SetActive(true);
+                pickableObject.SetActive(false);
+                pickUpHealthSound.Play();
+                inreach = false;
+                pickableObject = null;
+
+            } else if (pickableObject.name == "ShieldPack")
+            {
+                // player.GetComponent<WeaponsSwitch>().shotgun = true;
+                // player.GetComponent<WeaponsSwitch>().object01.SetActive(false);
+                // player.GetComponent<WeaponsSwitch>().object02.SetActive(true);
+                pickableObject.SetActive(false);
+                pickUpShieldSound.Play();
                 inreach = false;
                 pickableObject = null;
 
