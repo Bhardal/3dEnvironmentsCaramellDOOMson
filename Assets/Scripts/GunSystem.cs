@@ -160,7 +160,7 @@ public class GunSystem : MonoBehaviour
             StartCoroutine(ReloadTimer());
             anim.SetBool("empty", false);
 
-        } else if (Input.GetButtonDown("reload") && ammoCache >= ammoNeeded && ammoCache > 0 && ammoNeeded > 0)
+        } else if (Input.GetButtonDown("reload") && ammoCache > 0 && ammoNeeded > 0)
         {
             //Stops Bugs With Pressing Reload More Than Once:
             if (isreloading)
