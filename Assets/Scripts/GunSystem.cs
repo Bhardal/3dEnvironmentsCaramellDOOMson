@@ -52,6 +52,7 @@ public class GunSystem : MonoBehaviour
     public bool casingForward;                  //Get Correct Orientation Of Casings
     public bool casingBackwards;                //Get Correct Orientation Of Casings
     public bool infinite;
+    public bool canSwitch;
 
     private bool isreloading;                   //Is The Weapon Reloading
     private bool canShoot;                      //Is The Weapon Able To Be Shot
@@ -69,6 +70,7 @@ public class GunSystem : MonoBehaviour
 
         isreloading = false;
         canShoot = true;
+        canSwitch = true;
 
         originalRotation = transform.localEulerAngles;
         initialPosition = transform.localPosition;
@@ -91,14 +93,18 @@ public class GunSystem : MonoBehaviour
 
         //For Semi Auto Weapons:
 
-        if (Input.GetButtonDown("Fire1") && Time.time >= nextTimeToFire && semi && magazineSize > 0 && canShoot && Cursor.lockState == CursorLockMode.Locked)
+        if (Input.GetButtonDown("Fire1") && Time.time >= nextTimeToFire && semi && magazineSize > 0 && canShoot && Cursor.lockState == CursorLockMode.Locked && gameObject.layer == 6)
         {
             anim.SetBool("empty", false);
+            canSwitch = false;
             AddRecoil();
             nextTimeToFire = Time.time + 1f / fireRate;
             anim.SetBool("shoot", true);
             Invoke("setboolback", .5f);
             Shoot();
+        } else if (Time.time >= nextTimeToFire && canShoot)
+        {
+            canSwitch = true;
         }
 
         // //For Weapons With Melee:
@@ -155,6 +161,7 @@ public class GunSystem : MonoBehaviour
         if (Input.GetButtonDown("reload") && infinite && ammoNeeded > 0)
         {
             canShoot = false;
+            canSwitch = false;
             magazineSize += ammoNeeded;
             ammoNeeded -= ammoNeeded;
             isreloading = true;

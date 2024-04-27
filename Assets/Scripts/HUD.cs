@@ -25,7 +25,7 @@ public class HUD : MonoBehaviour
     void Update()
     {
 
-        if (GunOB.activeInHierarchy)
+        if (GunOB.layer == 6)
         {
             Gun.SetActive(true);
             Bullets.SetActive(true);
@@ -37,7 +37,7 @@ public class HUD : MonoBehaviour
             Bullets.SetActive(false);
         }
 
-        if (ShotgunOB.activeInHierarchy)
+        if (ShotgunOB.layer == 6)
         {
             Shotgun.SetActive(true);
             Shells.SetActive(true);

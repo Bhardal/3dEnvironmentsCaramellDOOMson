@@ -78,11 +78,13 @@ public class PickupClose : MonoBehaviour
                 pickUpAmmoSound.Play();
                 inreach = false;
                 pickableObject = null;
-            } else if (pickableObject.name == "ShotgunGround")
+            } else if (pickableObject.name == "ShotgunGround" && GameObject.Find("Gun").GetComponent<GunSystem>().canSwitch)
             {
                 player.GetComponent<WeaponsSwitch>().shotgun = true;
-                player.GetComponent<WeaponsSwitch>().object01.SetActive(false);
-                player.GetComponent<WeaponsSwitch>().object02.SetActive(true);
+                player.GetComponent<WeaponsSwitch>().object01.layer = 7; //.SetActive(false);
+                player.GetComponent<WeaponsSwitch>().object02.layer = 6; //.SetActive(true);
+                SetLayerAllChildren(player.GetComponent<WeaponsSwitch>().object01.transform, 7);
+                SetLayerAllChildren(player.GetComponent<WeaponsSwitch>().object02.transform, 6);
                 pickableObject.SetActive(false);
                 pickUpShotgunSound.Play();
                 inreach = false;
@@ -133,6 +135,17 @@ public class PickupClose : MonoBehaviour
             }
         }
     }
+
+    void SetLayerAllChildren(Transform root, int layer)
+    {
+        var children = root.GetComponentsInChildren<Transform>(includeInactive: true);
+        foreach (var child in children)
+        {
+//            Debug.Log(child.name);
+            child.gameObject.layer = layer;
+        }
+    }
+
 
     IEnumerator WaitEnd()
     {
