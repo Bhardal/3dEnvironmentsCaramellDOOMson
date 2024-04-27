@@ -25,6 +25,8 @@ public class PickupClose : MonoBehaviour
     public int ShieldPackHeal;
     public int ammoBoxAmount;
     private float currentHealth;
+    private float maxHealth = 100f;
+    private float maxShield = 50f;
 
     public bool inreach;
     public GameObject pickableObject;
@@ -87,25 +89,31 @@ public class PickupClose : MonoBehaviour
 
             } else if (pickableObject.name == "HealthPack")
             {
-                player.GetComponent<PlayerHealth>().health += healthPackHeal;
-                FXMenu.SetActive(true);
-                HealthFX.SetActive(true);
-                pickableObject.SetActive(false);
-                pickUpHealthSound.Play();
-                inreach = false;
-                pickableObject = null;
-                StartCoroutine(TurnScreenFXOFF());
+                if (player.GetComponent<PlayerHealth>().health < maxHealth)
+                {
+                    player.GetComponent<PlayerHealth>().health += healthPackHeal;
+                    FXMenu.SetActive(true);
+                    HealthFX.SetActive(true);
+                    pickableObject.SetActive(false);
+                    pickUpHealthSound.Play();
+                    inreach = false;
+                    pickableObject = null;
+                    StartCoroutine(TurnScreenFXOFF());
+                }
 
             } else if (pickableObject.name == "ShieldPack")
             {
-                player.GetComponent<PlayerHealth>().shield += ShieldPackHeal;
-                FXMenu.SetActive(true);
-                ShieldFX.SetActive(true);
-                pickableObject.SetActive(false);
-                pickUpShieldSound.Play();
-                inreach = false;
-                pickableObject = null;
-                StartCoroutine(TurnScreenFXOFF());
+                if (player.GetComponent<PlayerHealth>().shield < maxShield)
+                {
+                    player.GetComponent<PlayerHealth>().shield += ShieldPackHeal;
+                    FXMenu.SetActive(true);
+                    ShieldFX.SetActive(true);
+                    pickableObject.SetActive(false);
+                    pickUpShieldSound.Play();
+                    inreach = false;
+                    pickableObject = null;
+                    StartCoroutine(TurnScreenFXOFF());
+                }
 
             } else if (pickableObject.name == "EndWall")
             {
