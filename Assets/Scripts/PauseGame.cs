@@ -166,5 +166,6 @@ public class PauseGame : MonoBehaviour
     public void Restart(string levelname)
     {
         SceneManager.LoadScene(levelname);
+        Time.timeScale = 1;
     }
 }

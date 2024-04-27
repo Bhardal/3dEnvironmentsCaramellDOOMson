@@ -4,20 +4,24 @@ using UnityEngine;
 
 public class PlayerHealth : MonoBehaviour
 {
-    public GameObject hud;
-    public GameObject inv;
-    public GameObject deathScreen;
-    public GameObject player;
+    public GameObject deathMenu;
     public AudioSource loseSound;
 
     public float health = 100f;
     public float shield = 0f;
 
+    public bool died;
+    public bool on;
+    public bool off;
+
 
 
     void Start()
     {
-        deathScreen.SetActive(false);
+        died = false;
+        deathMenu.SetActive(false);
+        off = true;
+        on = false;
     }
 
 
@@ -25,26 +29,27 @@ public class PlayerHealth : MonoBehaviour
     void Update()
     {
 
-        if(health <= 0)
+        if(health <= 0 && died == false)
         {
+            died = true;
             AudioSource[] audios = FindObjectsOfType(typeof(AudioSource)) as AudioSource[];
             foreach(AudioSource aud in audios)
                 aud.volume = 0;
 
             loseSound.volume = 1;
             loseSound.Play();
-            player.GetComponent<CharacterController>().enabled = false;
-            Cursor.visible = true;
+            deathMenu.SetActive(true);
+            off = false;
+            on = true;
             Cursor.lockState = CursorLockMode.None;
-            hud.SetActive(false);
-            inv.SetActive(false);
-            deathScreen.SetActive(true);
+            Cursor.visible = true;
+            StartCoroutine(WaitEnd());
         }
 
         if (health > 100)
         {
             health = 100;
-        } else if (health < 0)
+        } else if (health <= 0)
         {
             health = 0;
         }
@@ -57,5 +62,11 @@ public class PlayerHealth : MonoBehaviour
             shield = 0;
         }
 
+    }
+
+    IEnumerator WaitEnd()
+    {
+        yield return new WaitForSeconds(1);
+        Time.timeScale = 0;
     }
 }

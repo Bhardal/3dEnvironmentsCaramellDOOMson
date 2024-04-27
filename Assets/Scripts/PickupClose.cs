@@ -13,6 +13,7 @@ public class PickupClose : MonoBehaviour
     public GameObject player;
     public GameObject HealthFX;
     public GameObject ShieldFX;
+    public GameObject FXMenu;
 
     public AudioSource pickUpAmmoSound;
     public AudioSource pickUpShotgunSound;
@@ -39,8 +40,7 @@ public class PickupClose : MonoBehaviour
         ShieldFX.SetActive(false);
 
         menu.SetActive(false);
-        off = true;
-        on = false;
+        FXMenu.SetActive(false);
     }
 
     void OnTriggerEnter(Collider other)
@@ -88,6 +88,7 @@ public class PickupClose : MonoBehaviour
             } else if (pickableObject.name == "HealthPack")
             {
                 player.GetComponent<PlayerHealth>().health += healthPackHeal;
+                FXMenu.SetActive(true);
                 HealthFX.SetActive(true);
                 pickableObject.SetActive(false);
                 pickUpHealthSound.Play();
@@ -98,6 +99,7 @@ public class PickupClose : MonoBehaviour
             } else if (pickableObject.name == "ShieldPack")
             {
                 player.GetComponent<PlayerHealth>().shield += ShieldPackHeal;
+                FXMenu.SetActive(true);
                 ShieldFX.SetActive(true);
                 pickableObject.SetActive(false);
                 pickUpShieldSound.Play();
@@ -125,7 +127,7 @@ public class PickupClose : MonoBehaviour
 
     IEnumerator WaitEnd()
     {
-        yield return new WaitForSeconds(1000);
+        yield return new WaitForSeconds(1);
         Time.timeScale = 0;
     }
 
@@ -134,6 +136,7 @@ public class PickupClose : MonoBehaviour
         yield return new WaitForSeconds(1.25f);
         HealthFX.SetActive(false);
         ShieldFX.SetActive(false);
+        FXMenu.SetActive(false);
     }
 
 }
