@@ -132,7 +132,7 @@ public class GunSystem : MonoBehaviour
 
         //Checks For 0 Ammo:
 
-        if (Input.GetButton("Fire1") && magazineSize == 0)
+        if (Input.GetButton("Fire1") && magazineSize == 0 && gameObject.layer == 6 && canShoot && Cursor.lockState == CursorLockMode.Locked && Time.time >= nextTimeToFire)
         {
             noAmmoSound.Play();
         }
@@ -158,7 +158,7 @@ public class GunSystem : MonoBehaviour
 
 
         //Reloading:
-        if (Input.GetButtonDown("reload") && infinite && ammoNeeded > 0)
+        if (Input.GetButtonDown("reload") && infinite && ammoNeeded > 0 && gameObject.layer == 6 && Cursor.lockState == CursorLockMode.Locked)
         {
             canShoot = false;
             canSwitch = false;
@@ -168,7 +168,7 @@ public class GunSystem : MonoBehaviour
             StartCoroutine(ReloadTimer());
             anim.SetBool("empty", false);
 
-        } else if (Input.GetButtonDown("reload") && ammoCache > 0 && ammoNeeded > 0)
+        } else if (Input.GetButtonDown("reload") && ammoCache > 0 && ammoNeeded > 0 && gameObject.layer == 6 && Cursor.lockState == CursorLockMode.Locked)
         {
             //Stops Bugs With Pressing Reload More Than Once:
             if (isreloading)
