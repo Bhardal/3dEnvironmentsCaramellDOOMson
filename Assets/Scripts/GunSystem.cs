@@ -147,7 +147,7 @@ public class GunSystem : MonoBehaviour
 
         if (magazineSize == 0)
         {
-            // ammoText.GetComponent<TextMeshProUGUI>().text = "Reload" ;
+            // ammoText.GetComponent<TextMeshProUGUI>().text = "Need Reload" ;
             anim.SetBool("empty", true);
         }
 
@@ -206,13 +206,13 @@ public class GunSystem : MonoBehaviour
 
         //Tells Our Text Object What To Say:
 
-        if (infinite == false)
+        if (infinite == false && GameObject.Find("Shotgun").layer == 6)
         {
             ammoText.GetComponent<TextMeshProUGUI>().text = magazineSize + " / " + ammoCache;
             ammoText.GetComponent<TextMeshProUGUI>().alignment = TextAlignmentOptions.Center;
-        } else
+        } else if (infinite == true && GameObject.Find("Gun").layer == 6)
         {
-            ammoText.GetComponent<TextMeshProUGUI>().text = magazineSize + " /   <sprite=\"Infinity\" name=\"Inf\">";
+            ammoText.GetComponent<TextMeshProUGUI>().text = magazineSize + "/   <sprite=\"Infinity\" name=\"Inf\">";
             ammoText.GetComponent<TextMeshProUGUI>().alignment = TextAlignmentOptions.Right;
         }
 
