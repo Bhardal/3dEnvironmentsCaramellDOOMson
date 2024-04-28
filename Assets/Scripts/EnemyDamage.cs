@@ -16,6 +16,9 @@ public class EnemyDamage : MonoBehaviour
     public AudioClip[] sounds;
     private AudioSource source;
 
+    private float timebetweenDamage = 7/3;
+    private float nextTimeToDamage = 0f;
+
 
     void Start()
     {
@@ -25,7 +28,7 @@ public class EnemyDamage : MonoBehaviour
     void OnTriggerEnter(Collider other)
     {
         damageRange = Random.Range(minDamage, maxDamage);
-        if (other.gameObject.tag == "Player" && randomDamage)
+        if (other.gameObject.tag == "Player" && randomDamage && Time.time >= nextTimeToDamage)
         {
             if (player.GetComponent<PlayerHealth>().shield <= 0)
             {
@@ -40,9 +43,10 @@ public class EnemyDamage : MonoBehaviour
             }
             source.clip = sounds[Random.Range(0, sounds.Length)];
             source.Play();
+            nextTimeToDamage = Time.time+timebetweenDamage;
         }
 
-        if (other.gameObject.tag == "Player" && setDamage)
+        if (other.gameObject.tag == "Player" && setDamage && Time.time >= nextTimeToDamage)
         {
             if (player.GetComponent<PlayerHealth>().shield <= 0)
             {
@@ -57,6 +61,48 @@ public class EnemyDamage : MonoBehaviour
             }
             source.clip = sounds[Random.Range(0, sounds.Length)];
             source.Play();
+            nextTimeToDamage = Time.time+timebetweenDamage;
+        }
+
+    }
+
+    void OnTriggerStay(Collider other)
+    {
+        damageRange = Random.Range(minDamage, maxDamage);
+        if (other.gameObject.tag == "Player" && randomDamage && Time.time >= nextTimeToDamage)
+        {
+            if (player.GetComponent<PlayerHealth>().shield <= 0)
+            {
+                player.GetComponent<PlayerHealth>().health -= damageRange;
+            } else
+            {
+                player.GetComponent<PlayerHealth>().shield -= damageRange;
+                if (player.GetComponent<PlayerHealth>().shield < 0)
+                {
+                    player.GetComponent<PlayerHealth>().health += player.GetComponent<PlayerHealth>().shield;
+                }
+            }
+            source.clip = sounds[Random.Range(0, sounds.Length)];
+            source.Play();
+            nextTimeToDamage = Time.time+timebetweenDamage;
+        }
+
+        if (other.gameObject.tag == "Player" && setDamage && Time.time >= nextTimeToDamage)
+        {
+            if (player.GetComponent<PlayerHealth>().shield <= 0)
+            {
+                player.GetComponent<PlayerHealth>().health -= damageSet;
+            } else
+            {
+                player.GetComponent<PlayerHealth>().shield -= damageSet;
+                if (player.GetComponent<PlayerHealth>().shield < 0)
+                {
+                    player.GetComponent<PlayerHealth>().health += player.GetComponent<PlayerHealth>().shield;
+                }
+            }
+            source.clip = sounds[Random.Range(0, sounds.Length)];
+            source.Play();
+            nextTimeToDamage = Time.time+timebetweenDamage;
         }
 
     }
