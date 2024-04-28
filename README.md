@@ -34,7 +34,9 @@ ___
 - The Win sound comes from the [Steins;Gate ](https://myanimelist.net/anime/9253/Steins_Gate) anime
 - The Lose sound comes from the game [Street Fighter II](https://en.wikipedia.org/wiki/Street_Fighter_II)
 - The Light image comes from [this](https://texturelabs.org/textures/lensfx_142/) website
-<br>
+- The default background music is [Caramelldansen english version](https://youtu.be/A67ZkAd1wmI?si=2qzXQCk0KKpnX1wI), and the second option is [Caramelldansen version](https://youtu.be/6-8E4Nirh9s?si=mhZPsCLdneKO0_9L) (both nightcore versions)
+
+
 ### Unclear or modified
 - The ShellPickup sound was created by speeding up the weapon pickup sound
 - The ScientistDie and the NekoDie sound both come from internet memes
@@ -42,6 +44,8 @@ ___
 - The muzzle flash image comes from somewhere on the Internet
 - The grass and the sky both come from the Unity Asset Store
 - The base image used for creating the Shells image comes from somewhere on the Internet
+
+<br>
 
 *All other sounds, scripts, texture or assets of any kind were laboriously created by my lack of sleep*
 <br>
