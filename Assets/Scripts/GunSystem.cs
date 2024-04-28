@@ -280,7 +280,10 @@ public class GunSystem : MonoBehaviour
     {
         weaponSound.Play();
         RaycastHit hit;
-        if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, range)) ;
+        if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, range))
+        {
+
+        }
 
         Target target = hit.transform.GetComponent<Target>();
         if (target != null)

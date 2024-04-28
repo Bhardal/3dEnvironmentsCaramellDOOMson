@@ -57,11 +57,8 @@ public class EnemyController : MonoBehaviour {
             {
                 targetAngle = Quaternion.AngleAxis(0, Vector3.up)*transform.rotation;
                 lookTime = Random.Range(lookTimeMin, lookTimeMax);
-                if (Time.time >= nextTimeToRotate)
-                {
-                    lookSide = false;
-                    nextTimeToRotate = Time.time + lookTime;
-                }
+                lookSide = false;
+                nextTimeToRotate = Time.time + lookTime;
             } else if (containsLookType && Time.time >= nextTimeToRotate)
             {
                 targetAngle = Quaternion.AngleAxis(lookAngle, Vector3.up)*transform.rotation;
