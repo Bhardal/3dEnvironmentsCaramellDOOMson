@@ -1,5 +1,5 @@
 # CaramellDOOMson
-> This is the Github repository for the **3D Virtual Environments and Applications**' Homework 2 : **Finaly deliverable**
+> This is the Github repository for the **3D Virtual Environments and Applications**' Homework 2 : **Final deliverable**
 
 ___
 
